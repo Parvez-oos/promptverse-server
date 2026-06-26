@@ -4,6 +4,7 @@ export interface IPromptDocument extends Document {
   title: string;
   description: string;
   content: string;
+  usageInstructions?: string;
   category: string;
   aiTool: string;
   tags: string[];
@@ -42,6 +43,10 @@ const promptSchema = new Schema<IPromptDocument>(
     content: {
       type: String,
       required: true,
+    },
+    usageInstructions: {
+      type: String,
+      default: '',
     },
     category: {
       type: String,
