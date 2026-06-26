@@ -43,6 +43,11 @@ export const confirmPayment = async (req: AuthRequest, res: Response): Promise<v
   try {
     const { paymentIntentId } = req.body;
 
+    if (!paymentIntentId) {
+      res.status(400).json({ message: 'paymentIntentId is required.' });
+      return;
+    }
+
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
     if (paymentIntent.status !== 'succeeded') {
@@ -79,6 +84,7 @@ export const confirmPayment = async (req: AuthRequest, res: Response): Promise<v
       data: payment,
     });
   } catch (error: any) {
+    console.error('Payment confirmation error:', error.message);
     res.status(500).json({ message: error.message || 'Payment confirmation failed.' });
   }
 };
